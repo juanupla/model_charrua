@@ -1,4 +1,4 @@
-﻿namespace Charrua_API.commands
+﻿namespace Charrua_API.commands.UsuarioCommand
 {
     public class LoginCommand
     {

@@ -1,5 +1,6 @@
 ﻿using Charrua_API.Data;
 using Charrua_API.Response;
+using Charrua_API.Response.JwtResponse;
 using Charrua_API.Response.Usuario;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -14,44 +15,44 @@ namespace Charrua_API.Models
         public string Audience { get; set; }
         public string Subject { get; set; }
 
-        private readonly ContextBD contextBD;
-        public Jwt(ContextBD contextBD)
-        {
-            this.contextBD = contextBD;
-        }
 
 
-        public async Task<object> validarToken(ClaimsIdentity identity)
+        public static async Task<JwtResponse> validarToken(ClaimsIdentity identity, ContextBD contextBD)
         {
             
             try
             {
-                RespCreateUser res = new RespCreateUser();
+                JwtResponse response = new JwtResponse();
+                
                 if (identity.Claims.Count() == 0)
                 {
                     
-                    res.setError("Verificar Token", HttpStatusCode.NonAuthoritativeInformation);
-                    return res;
+                    response.setError("Verificar Token",HttpStatusCode.NonAuthoritativeInformation);
+                    return response;
                 }
                 var id = identity.Claims.FirstOrDefault(x => x.Type == "Id").Value;
-                Usuario usr = new Usuario();
+               
                 var ult = await contextBD.usuarios.Where(x => x.Id == Convert.ToInt32(id)).FirstOrDefaultAsync();
                 if(ult == null)
                 {
-                    res.setError("Verificar Token", HttpStatusCode.NonAuthoritativeInformation);
-                    return res;
+                    response.setError("Verificar Token", HttpStatusCode.NonAuthoritativeInformation);
+                    return response;
                 }
-                res.UserName = ult.UserName;
-                res.Email = ult.Email;
-                return res;
+
+
+                response.usr.UserName = ult.UserName;
+                response.usr.Authorization = ult.Authorization;
+
+                
+
+                return response;
 
             }
             catch(Exception e)
             {
-                RespCreateUser res = new RespCreateUser();
-
-                res.setError((res.Mensaje = e.Message), HttpStatusCode.BadRequest);
-                return res;
+                JwtResponse response = new JwtResponse();
+                response.setError(e.Message,HttpStatusCode.Unauthorized);
+                return response;
             }
         }
     }
