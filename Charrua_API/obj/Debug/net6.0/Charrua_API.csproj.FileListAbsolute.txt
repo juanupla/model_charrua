@@ -110,3 +110,11 @@ C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\obj\Debug\net6.0
 C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\obj\Debug\net6.0\Charrua_API.pdb
 C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\obj\Debug\net6.0\Charrua_API.genruntimeconfig.cache
 C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\obj\Debug\net6.0\ref\Charrua_API.dll
+C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\bin\Debug\net6.0\BouncyCastle.Cryptography.dll
+C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\bin\Debug\net6.0\MailKit.dll
+C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\bin\Debug\net6.0\MimeKit.dll
+C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\bin\Debug\net6.0\System.Formats.Asn1.dll
+C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\bin\Debug\net6.0\System.Security.Cryptography.Pkcs.dll
+C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\bin\Debug\net6.0\System.Text.Encoding.CodePages.dll
+C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
+C:\EscritorioCremona\Proyectos-CSharp\model_charrua\Charrua_API\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Text.Encoding.CodePages.dll

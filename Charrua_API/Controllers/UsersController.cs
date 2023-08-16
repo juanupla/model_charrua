@@ -52,12 +52,10 @@ namespace Charrua_API.Controllers
             var ident = HttpContext.User.Identity as ClaimsIdentity;
             var resul = await mediator.Send(new DeleteUsuarioBusiness.DeleteUsuario_Busieness
             {
-                Id = id ,
+                Id = id,
                 identity = ident
             });
-            return resul;
-
-            
+            return resul; 
         }
 
     }

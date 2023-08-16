@@ -1,5 +1,6 @@
-﻿using Charrua_API.Data;
-using Charrua_API.Models;
+﻿using Charrua_API.Configurations.Encrypting_H256;
+using Charrua_API.Configurations.JsonWebToken;
+using Charrua_API.Data;
 using Charrua_API.Response.Usuario;
 using FluentValidation;
 using MediatR;
@@ -53,7 +54,9 @@ namespace Charrua_API.business.UsuarioBusieness
                     return res;
                 }
 
-                var bd = await contextBD.usuarios.Where(x => x.UserName == request.UserName && x.Password == request.Password).FirstOrDefaultAsync();
+                var bd = await contextBD.usuarios.Where(x => x.UserName == request.UserName 
+                && x.Password == EncryptingH256.getInstance().ConvertirSHA256(request.Password)).FirstOrDefaultAsync();
+
                 if(bd == null)
                 {
                     res.setError("Usuario o Password incorrecto", HttpStatusCode.BadRequest);
@@ -68,7 +71,7 @@ namespace Charrua_API.business.UsuarioBusieness
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()),
                     new Claim("Id",bd.Id.ToString()),
                     new Claim("UserName", bd.UserName),
-                    new Claim("Password",bd.Password),
+                    //new Claim("Password",bd.Password),
                     new Claim("Email",bd.Email),
                     new Claim("Authorization", bd.Authorization),
                     

@@ -1,4 +1,5 @@
-﻿using Charrua_API.Data;
+﻿using Charrua_API.Configurations.Encrypting_H256;
+using Charrua_API.Data;
 using Charrua_API.Models;
 using Charrua_API.Response.Usuario;
 using FluentValidation;
@@ -59,7 +60,7 @@ namespace Charrua_API.business.UsuarioBusieness
 
                 Usuario user = new Usuario();
                 user.UserName = request.Username; 
-                user.Password = request.Password;
+                user.Password = EncryptingH256.getInstance().ConvertirSHA256(request.Password);
                 user.Email = request.Email;
                 user.Authorization = "user";
 

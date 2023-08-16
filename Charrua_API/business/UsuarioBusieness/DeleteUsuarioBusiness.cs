@@ -1,4 +1,5 @@
-﻿using Charrua_API.Data;
+﻿using Charrua_API.Configurations.JsonWebToken;
+using Charrua_API.Data;
 using Charrua_API.Models;
 using Charrua_API.Response.JwtResponse;
 using Charrua_API.Response.Usuario;

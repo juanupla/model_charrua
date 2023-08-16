@@ -11,5 +11,8 @@ namespace Charrua_API.Models
         public string Email { get; set; }
         public string Authorization { get; set; }
 
+        //public string Confirmado { get; set; }
+        //public string Restablecer //estos dos son campos para confirmar user y restablecer password
+
     }
 }

@@ -16,8 +16,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//FluentValidation de 1 solo, ajusta a las demas
 builder.Services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<NewUserBusiness>());
 
+//Jwt
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters {
     ValidateIssuer = true,
     ValidateAudience = true,
@@ -28,9 +30,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
 });
 
+//Context, Postgre y Conexion
 builder.Services.AddDbContext<ContextBD>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ConnectionDataBase")));
 
-builder.Services.AddMediatR(typeof(NewUserBusiness).Assembly);
+//mediatR de 1 solo, ajusta a las demas
+builder.Services.AddMediatR(typeof(NewUserBusiness).Assembly); 
 
 var app = builder.Build();
 
