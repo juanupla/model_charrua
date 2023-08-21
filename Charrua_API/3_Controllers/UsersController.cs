@@ -1,6 +1,8 @@
-﻿using Charrua_API.business.UsuarioBusieness;
+﻿using Charrua_API._0_business.UsuarioBusieness;
+using Charrua_API.business.UsuarioBusieness;
 using Charrua_API.commands.UsuarioCommand;
 using Charrua_API.Models;
+using Charrua_API.Response;
 using Charrua_API.Response.Usuario;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -26,8 +28,9 @@ namespace Charrua_API.Controllers
 
             var result = await mediator.Send(new NewUserBusiness.NewUser_Business
             {
-                Username= newUserCommand.Username,
-                Password=newUserCommand.Password,
+                Name= newUserCommand.Name,
+                LastName = newUserCommand.LastName,
+                Password =newUserCommand.Password,
                 Email=newUserCommand.Email
             });
             return result;
@@ -39,11 +42,25 @@ namespace Charrua_API.Controllers
         {
             var result = await mediator.Send(new LoginBusiness.Login_Business
             {
-                UserName = loginCommand.UserName,
+                Email = loginCommand.Email,
                 Password=loginCommand.Password
             });
             return result;
         }
+        [HttpGet("/confirm")]
+        public async Task<IActionResult> ConfirmRegistration(string code)
+        {
+            var result = await mediator.Send(new ConfirmBusiness.Confirm_Business
+            {
+                Token = code
+            });
+            if(result.Ok == true)
+            {
+                return Redirect("https://google.com"); //aca debe ir la direccion de nuestra web; se podria pensar un front para una validacion correcta
+            }
+            return Redirect("https://chat.openai.com/"); //aca se podria pensar lo mismo para un mensaje inválido
+        }
+
         [HttpDelete]
         [Route("/DeleteUser/{id}")]
         [Authorize]

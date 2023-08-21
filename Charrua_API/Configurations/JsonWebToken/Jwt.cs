@@ -40,7 +40,9 @@ namespace Charrua_API.Configurations.JsonWebToken
                 }
 
 
-                response.usr.UserName = ult.UserName;
+                response.usr.Name = ult.Name;
+                response.usr.LastName= ult.LastName;
+                response.usr.Email = ult.Email;
                 response.usr.Authorization = ult.Authorization;
 
 

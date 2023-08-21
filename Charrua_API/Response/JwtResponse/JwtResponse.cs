@@ -1,6 +1,4 @@
-﻿
-
-using System.Net;
+﻿using System.Net;
 
 namespace Charrua_API.Response.JwtResponse
 {

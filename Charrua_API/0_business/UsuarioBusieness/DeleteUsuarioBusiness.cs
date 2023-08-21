@@ -26,6 +26,7 @@ namespace Charrua_API.business.UsuarioBusieness
             public validacion()
             {
                 RuleFor(x => x.Id).NotEmpty().WithMessage("Indique el usuario a eliminar");
+                RuleFor(x => x.identity).NotEmpty().WithMessage("no autorizado");
             }
         }
         public class manejador : IRequestHandler<DeleteUsuario_Busieness, RespCreateUser>
@@ -54,11 +55,20 @@ namespace Charrua_API.business.UsuarioBusieness
                 //------------------
                 var rToken = Jwt.validarToken(request.identity,contextBD);
 
-                try { if (Convert.ToUInt32(rToken.Result.ToString()) == 0) { throw new Exception(HttpStatusCode.Unauthorized.ToString()); } }catch(Exception) { }
+                try 
+                { 
+                    if (Convert.ToUInt32(rToken.Result.ToString()) == 0) 
+                    { 
+                        result.setError(HttpStatusCode.Unauthorized.ToString(),HttpStatusCode.Unauthorized); 
+                        return result; 
+                    } 
+                }
+                catch(Exception) { }
 
                 if (!rToken.IsCompletedSuccessfully)
                 {
-                    throw new Exception("token inválido");
+                    result.setError("token inválido", HttpStatusCode.Unauthorized);
+                    return result;
                 }
 
                 JwtResponse user = rToken.Result;     //----------------- verifica el token y devuelve un user x si es ncesario acceder a autorizaciones
@@ -71,7 +81,8 @@ namespace Charrua_API.business.UsuarioBusieness
                     var usrr = await contextBD.usuarios.FirstOrDefaultAsync(x => x.Id == request.Id);
 
                     Usuario usuario = new Usuario();
-                    usuario.UserName = usrr.UserName;
+                    usuario.Name = usrr.Name;
+                    usuario.LastName = usrr.LastName;
                     usuario.Email = usrr.Email;
                     usuario.Authorization = usrr.Authorization;
                     usuario.Password = usrr.Password;

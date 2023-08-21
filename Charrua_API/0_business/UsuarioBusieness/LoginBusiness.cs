@@ -17,15 +17,16 @@ namespace Charrua_API.business.UsuarioBusieness
     {
         public class Login_Business : IRequest<RespLogin>
         {
-            public string UserName { get; set; }
+            public string Email { get; set; }
             public string Password { get; set; }
+
         }
 
         public class validacion : AbstractValidator<Login_Business>
         {
             public validacion()
             {
-                RuleFor(x => x.UserName).NotEmpty().WithMessage("Email o Password incorrectos");
+                RuleFor(x => x.Email).NotEmpty().WithMessage("Email o Password incorrectos");
                 RuleFor(x => x.Password).NotEmpty().WithMessage("Email o Password incorrectos");
             }
         }
@@ -54,12 +55,17 @@ namespace Charrua_API.business.UsuarioBusieness
                     return res;
                 }
 
-                var bd = await contextBD.usuarios.Where(x => x.UserName == request.UserName 
+                var bd = await contextBD.usuarios.Where(x => x.Email == request.Email 
                 && x.Password == EncryptingH256.getInstance().ConvertirSHA256(request.Password)).FirstOrDefaultAsync();
 
                 if(bd == null)
                 {
                     res.setError("Usuario o Password incorrecto", HttpStatusCode.BadRequest);
+                    return res;
+                }
+                if (bd.Confirmado == false)
+                {
+                    res.setError("Por favor, revise su casilla de Email y confirme su cuenta", HttpStatusCode.Unauthorized);
                     return res;
                 }
 
@@ -69,10 +75,12 @@ namespace Charrua_API.business.UsuarioBusieness
                     new Claim(JwtRegisteredClaimNames.Sub,jwt.Subject),
                     new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()),
-                    new Claim("Id",bd.Id.ToString()),
-                    new Claim("UserName", bd.UserName),
+                    new Claim("Id",bd.Id.ToString()),//---------------------------------------------------------REVISAR ESTO!!!!!!!!!! 
+                    new Claim("Email", bd.Email),
+                    new Claim("Name", bd.Name),
+                    new Claim("LastName", bd.LastName),
                     //new Claim("Password",bd.Password),
-                    new Claim("Email",bd.Email),
+                    //new Claim("Email",bd.Email),
                     new Claim("Authorization", bd.Authorization),
                     
                 };
@@ -81,7 +89,8 @@ namespace Charrua_API.business.UsuarioBusieness
 
                 var token = new JwtSecurityToken(jwt.Issuer,jwt.Audience,claims,expires: DateTime.Now.AddMinutes(60),signingCredentials:signIn);
 
-                res.Token = new JwtSecurityTokenHandler().WriteToken(token);
+         
+                res.Token= new JwtSecurityTokenHandler().WriteToken(token);
 
                 return res;
 

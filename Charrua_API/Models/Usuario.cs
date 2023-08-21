@@ -6,13 +6,15 @@ namespace Charrua_API.Models
     public class Usuario
     {
         public int Id { get; set; }
-        public string UserName { get; set; }
+        public string Name { get; set; }
+        public string LastName { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        public string Authorization { get; set; }
+        public string Authorization { get; set; }//que nivel de autorizacion posee : user o admin
+        public bool Confirmado { get; set; } //confirmar user
+        public string Token { get; set; }
 
-        //public string Confirmado { get; set; }
-        //public string Restablecer //estos dos son campos para confirmar user y restablecer password
+        //public string Restablecer //este campo es para restablecer password
 
     }
 }

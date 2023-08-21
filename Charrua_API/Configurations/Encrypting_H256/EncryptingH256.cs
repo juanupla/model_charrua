@@ -32,5 +32,11 @@ namespace Charrua_API.Configurations.Encrypting_H256
             return hash;
         }
 
+        public string GenerarToken()
+        {
+            string token = Guid.NewGuid().ToString("N");
+            return token;
+        }
+
     }
 }
